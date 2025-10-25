@@ -1,0 +1,55 @@
+{
+    "name": "i-cant-believe-gits-not-a-file",
+    "displayName": "I can't believe git's not a file",
+    "description": "Access and edit the git index as if it's a real filesystem",
+    "version": "0.0.1",
+    "license": "MIT",
+    "repository": {
+        "type": "git",
+        "url": "https://github.com/ErnWong/i-cant-believe-gits-not-a-file"
+    },
+	"engines": {
+		"vscode": "^1.100.0"
+	},
+	"categories": [
+		"SCM Providers"
+	],
+	"activationEvents": [
+		"onFileSystem:gitindex"
+	],
+	"main": "./out/extension",
+	"contributes": {
+		"commands": [
+			{
+				"command": "icantbelievegit.openIndexForCurrentFile",
+				"title": "Open index for current file",
+				"category": "icantbelievegit"
+			},
+			{
+				"command": "icantbelievegit.openIndexForPath",
+				"title": "Open index for path",
+				"category": "icantbelievegit"
+			}
+		],
+		"menus": {
+			"commandPalette": [
+				{
+				    "command": "icantbelievegit.openIndexForCurrentFile"
+				},
+				{
+				    "command": "icantbelievegit.openIndexForPath"
+				}
+			]
+		}
+	},
+	"scripts": {
+		"vscode:prepublish": "npm run compile",
+		"compile": "tsc -p ./",
+		"watch": "tsc -watch -p ./"
+	},
+	"devDependencies": {
+		"@types/node": "^22",
+		"@types/vscode": "^1.100.0",
+		"typescript": "^5.9.2"
+	}
+}
