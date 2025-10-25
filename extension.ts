@@ -55,7 +55,7 @@ class GitIndexWatcher extends vscode.Disposable {
                     }
                 }
             } catch (err) {
-                if (err?.name === 'AbortError') return;
+                if (err && (err as {name:string}).name === 'AbortError') return;
                 throw err;
             }
         })();
