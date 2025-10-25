@@ -248,6 +248,7 @@ export function activate(context: vscode.ExtensionContext) {
             return;
         }
         const git_index_path = fromLocalPath(paths[0]);
-        vscode.workspace.openTextDocument(git_index_path);
+        const doc = await vscode.workspace.openTextDocument(git_index_path);
+        await vscode.window.showTextDocument(doc);
     }));
 }
