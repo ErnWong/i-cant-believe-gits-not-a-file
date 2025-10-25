@@ -5,7 +5,18 @@ import * as util from 'node:util';
 import * as vscode from 'vscode';
 import { abort } from 'node:process';
 
-const execFile = util.promisify(child_process.execFile);
+const wrap = <T extends (...args: any[])=>Promise<any>>(f: T) => async (...args: Parameters<T>):Promise<Awaited<ReturnType<T>>> => {
+    try {
+        console.log(...args);
+        return await f(...args);
+    } catch (err) {
+        vscode.window.showErrorMessage('Failed to run git command:', `${err}`);
+        console.error('Failed to run git command:', err);
+        throw err;
+    }
+};
+const execFileUnguarded = util.promisify(child_process.execFile);
+const execFile = wrap(execFileUnguarded) as unknown as typeof execFileUnguarded;
 
 const SCHEME = 'icantbeleivegit';
 
