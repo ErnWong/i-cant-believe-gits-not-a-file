@@ -15,7 +15,7 @@
 		"SCM Providers"
 	],
 	"activationEvents": [
-		"onFileSystem:gitindex"
+		"onFileSystem:icantbelievegit"
 	],
 	"main": "./out/extension",
 	"contributes": {
