@@ -19,11 +19,15 @@ const execFileUnguarded = util.promisify(child_process.execFile);
 const execFile = wrap(execFileUnguarded) as unknown as typeof execFileUnguarded;
 
 const SCHEME = 'icantbeleivegit';
+const TYPE_MAP = {
+    'blob': vscode.FileType.File,
+    'tree': vscode.FileType.Directory,
+} as const;
 
 async function getGitRootForFile(filePath: string) {
     return (await execFile('git', ['rev-parse', '--show-toplevel'], {
         cwd: path.dirname(filePath),
-    })).stdout;
+    })).stdout.trim();
 }
 
 function toLocalPath(uri: vscode.Uri): string {
@@ -52,7 +56,7 @@ class GitIndexWatcher extends vscode.Disposable {
     private readonly _listeners = new Set<() => void>();
     constructor(git_root: string) {
         const abort_controller = new AbortController();
-        const index_changes = fs.watch(path.join(git_root, 'index'), {
+        const index_changes = fs.watch(path.join(git_root, '.git', 'index'), {
             signal: abort_controller.signal,
         });
         super(() => {
@@ -123,8 +127,30 @@ class GitIndexFS implements vscode.FileSystemProvider {
         });
     }
 
-    stat(uri: vscode.Uri): vscode.FileStat | Thenable<vscode.FileStat> {
-        throw new Error('Method not implemented.');
+    async stat(uri: vscode.Uri): Promise<vscode.FileStat> {
+        const local_path = toLocalPath(uri);
+        const [object_type, object_id] = (await execFile(
+            'git',
+            ['--literal-pathspecs', 'ls-files', '--cached', '--format=%(objecttype)%x00%(objectname)', local_path],
+            {
+                cwd: path.dirname(local_path),
+            }
+        )).stdout.trim().split('\x00');
+        const size = Number.parseInt((await execFile(
+            'git',
+            ['--literal-pathspecs', 'cat-file', '-s', object_id],
+            {
+                cwd: path.dirname(local_path),
+            }
+        )).stdout.trim());
+        console.assert(Object.hasOwn(TYPE_MAP, object_type), `Unexpected type ${object_type}`);
+        const stat = await fs.stat(path.join(await getGitRootForFile(local_path), '.git', 'index'));
+        return {
+            type: TYPE_MAP[object_type as keyof typeof TYPE_MAP],
+            ctime: 0,
+            mtime: stat.mtimeMs,
+            size,
+        };
     }
 
     async readDirectory(uri: vscode.Uri): Promise<[string, vscode.FileType][]> {
@@ -139,10 +165,6 @@ class GitIndexFS implements vscode.FileSystemProvider {
             .split('\n')
             .map(entry => {
                 const [path, object_type] = entry.split('\x00');
-                const TYPE_MAP = {
-                    'blob': vscode.FileType.File,
-                    'tree': vscode.FileType.Directory,
-                } as const;
                 console.assert(Object.hasOwn(TYPE_MAP, object_type), `Unexpected type ${object_type}`);
                 return [path, TYPE_MAP[object_type as keyof typeof TYPE_MAP]];
             });
