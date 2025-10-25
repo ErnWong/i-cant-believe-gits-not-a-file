@@ -173,15 +173,15 @@ class GitIndexFS implements vscode.FileSystemProvider {
     }
 
     delete(uri: vscode.Uri, options: { readonly recursive: boolean; }): void | Thenable<void> {
-        throw new Error('Method not implemented.');
+        throw new Error('GitIndexFS delete not implemented.');
     }
 
     rename(oldUri: vscode.Uri, newUri: vscode.Uri, options: { readonly overwrite: boolean; }): void | Thenable<void> {
-        throw new Error('Method not implemented.');
+        throw new Error('GitIndexFS rename not implemented.');
     }
 
     copy(source: vscode.Uri, destination: vscode.Uri, options: { readonly overwrite: boolean; }): void | Thenable<void> {
-        throw new Error('Method not implemented.');
+        throw new Error('GitIndexFS copy not implemented.');
     }
 }
 
