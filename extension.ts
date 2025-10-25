@@ -149,14 +149,14 @@ class GitIndexFS implements vscode.FileSystemProvider {
     }
 
     createDirectory(uri: vscode.Uri): void | Thenable<void> {
-        throw new Error('Method not implemented.');
+        throw new Error('GitIndexFS createDirectory not implemented.');
     }
 
     async readFile(uri: vscode.Uri): Promise<Uint8Array> {
         const local_path = toLocalPath(uri);
         const object_id = (await execFile('git', ['--literal-pathspecs', 'ls-files', '--cached', '--format=%(objectname)', local_path], {
             cwd: path.dirname(local_path),
-        })).stdout;
+        })).stdout.trim();
         return (await execFile('git', ['cat-file', 'blob', object_id], {
             cwd: path.dirname(local_path),
             encoding: 'buffer',
@@ -166,7 +166,7 @@ class GitIndexFS implements vscode.FileSystemProvider {
     async writeFile(uri: vscode.Uri, content: Uint8Array, options: { readonly create: boolean; readonly overwrite: boolean; }): Promise<void> {
         const proc = execFile('git', ['hash-object', '-w', '--stdin']);
         proc.child.stdin?.end(content);
-        const object_id = (await proc).stdout;
+        const object_id = (await proc).stdout.trim();
         const local_path = toLocalPath(uri);
         const mode = (await execFile('git',['--literal-pathspecs', 'ls-file', '--format=$(objectmode)', local_path])).stdout.trim() ?? '100644';
         await execFile('git', ['update-index', '--cacheinfo', [mode, object_id, local_path].join(',')]);
