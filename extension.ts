@@ -372,7 +372,7 @@ export function activate(context: vscode.ExtensionContext) {
     context.subscriptions.push(vscode.commands.registerCommand('icantbelievegit.openStagedChanges', async _ => {
         const current_path = vscode.window.activeTextEditor?.document.uri ?? vscode.workspace.workspaceFolders?.[0].uri;
         if (!current_path) {
-            showError("Cannot open staged changes: There is no active document or workspace");
+            showError("Cannot open staged changes: There are no active document or workspace");
             return;
         }
         if (current_path.scheme !== 'file') {
