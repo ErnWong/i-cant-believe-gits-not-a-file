@@ -229,7 +229,7 @@ export function activate(context: vscode.ExtensionContext) {
             }
         )
     );
-    context.subscriptions.push(vscode.commands.registerCommand('icantbelievegit.openIndexForCurrentFile', _ => {
+    context.subscriptions.push(vscode.commands.registerCommand('icantbelievegit.openIndexForCurrentFile', async _ => {
         const current_local_path = vscode.window.activeTextEditor?.document.uri;
         if (!current_local_path) {
             vscode.window.showErrorMessage("Cannot open index for current file: There isn't an active text editor available");
@@ -240,7 +240,8 @@ export function activate(context: vscode.ExtensionContext) {
             return;
         }
         const git_index_path = fromLocalPath(current_local_path);
-        vscode.workspace.openTextDocument(git_index_path);
+        const doc = await vscode.workspace.openTextDocument(git_index_path);
+        await vscode.window.showTextDocument(doc, vscode.ViewColumn.Beside);
     }));
     context.subscriptions.push(vscode.commands.registerCommand('icantbelievegit.openIndexForPath', async _ => {
         const paths = await vscode.window.showOpenDialog({
@@ -259,6 +260,6 @@ export function activate(context: vscode.ExtensionContext) {
         }
         const git_index_path = fromLocalPath(paths[0]);
         const doc = await vscode.workspace.openTextDocument(git_index_path);
-        await vscode.window.showTextDocument(doc);
+        await vscode.window.showTextDocument(doc, vscode.ViewColumn.Beside);
     }));
 }
