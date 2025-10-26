@@ -3,6 +3,7 @@ import * as path from 'node:path';
 import * as fs from 'node:fs/promises';
 import * as util from 'node:util';
 import * as vscode from 'vscode';
+import type { API as GitAPI, GitExtension, APIState } from './typings/git.d.ts';
 
 let output_channel : vscode.LogOutputChannel;
 
@@ -57,7 +58,7 @@ const TYPE_MAP = {
 
 async function getGitRootForFile(filePath: string) {
     return (await execFile('git', ['rev-parse', '--show-toplevel'], {
-        cwd: path.dirname(filePath),
+        cwd: (await fs.stat(filePath)).isDirectory() ? filePath : path.dirname(filePath),
     })).stdout.trim();
 }
 
@@ -304,6 +305,9 @@ class GitIndexFS implements vscode.FileSystemProvider {
 
 export function activate(context: vscode.ExtensionContext) {
     const indexFs = new GitIndexFS();
+
+    const gitExtension = vscode.extensions.getExtension<GitExtension>('vscode.git')?.exports?.getAPI(1)!;
+
     context.subscriptions.push(
         output_channel = vscode.window.createOutputChannel("I Can't Believe (G)it's Not A File", { log: true })
     );
@@ -362,5 +366,32 @@ export function activate(context: vscode.ExtensionContext) {
         const git_index_path = fromLocalPath(paths[0]);
         const doc = await vscode.workspace.openTextDocument(git_index_path);
         await vscode.window.showTextDocument(doc, vscode.ViewColumn.Beside);
+    }));
+    context.subscriptions.push(vscode.commands.registerCommand('icantbelievegit.openStagedChanges', async _ => {
+        const current_path = vscode.window.activeTextEditor?.document.uri ?? vscode.workspace.workspaceFolders?.[0].uri;
+        if (!current_path) {
+            showError("Cannot open staged changes: There is no active document or workspace");
+            return;
+        }
+        if (current_path.scheme !== 'file') {
+            showError("Cannot open staged changes: Not a local directory");
+            return;
+        }
+        const git_root = await getGitRootForFile(current_path.fsPath);
+        const staged_change_paths = (await execFile('git', ['diff', '--name-only', '--cached'], {
+            cwd: git_root,
+        })).stdout
+            .trim()
+            .split('\n')
+            .map(relative_path => vscode.Uri.file(path.join(git_root, relative_path)));
+        await vscode.commands.executeCommand(
+            'vscode.changes',
+            `Git: Staged Changes (editable)`,
+            staged_change_paths.map(local_uri => [
+                local_uri,
+                gitExtension.toGitUri(local_uri, 'HEAD'),
+                fromLocalPath(local_uri),
+            ])
+        );
     }));
 }
