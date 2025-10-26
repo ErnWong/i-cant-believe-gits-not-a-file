@@ -1,3 +1,5 @@
+// Copied from https://github.com/microsoft/vscode/blame/0279a827fae09b98b4bc6a7b64b01af7a32ad955/extensions/git/src/api/git.d.ts
+
 /*---------------------------------------------------------------------------------------------
  *  Copyright (c) Microsoft Corporation. All rights reserved.
  *  Licensed under the MIT License. See License.txt in the project root for license information.
