@@ -22,6 +22,7 @@ const execFileUnguarded = util.promisify(child_process.execFile);
 const execFile = wrap(execFileUnguarded) as unknown as typeof execFileUnguarded;
 
 const SCHEME = 'icantbeleivegit';
+const SUFFIX = '.staged';
 const TYPE_MAP = {
     'blob': vscode.FileType.File,
     'tree': vscode.FileType.Directory,
@@ -37,10 +38,11 @@ function toLocalPath(uri: vscode.Uri): string {
     console.assert(uri.scheme === SCHEME);
     console.assert(uri.query === '');
     console.assert(uri.fragment === '');
+    console.assert(uri.path.endsWith(SUFFIX));
     return vscode.Uri.from({
         scheme: 'file',
         authority: uri.authority,
-        path: uri.path,
+        path: uri.path.slice(0, -SUFFIX.length),
     }).fsPath;
 };
 
@@ -51,7 +53,7 @@ function fromLocalPath(uri: vscode.Uri): vscode.Uri {
     return vscode.Uri.from({
         scheme: SCHEME,
         authority: uri.authority,
-        path: uri.path,
+        path: uri.path + SUFFIX,
     });
 };
 
