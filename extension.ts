@@ -278,11 +278,13 @@ class GitIndexFS implements vscode.FileSystemProvider {
         });
         proc.child.stdin!.end(content);
         const object_id = (await proc).stdout.trim();
-        const mode = (await execFile('git',['--literal-pathspecs', 'ls-files', '--format=%(objectmode)', local_path], {
+        const existing_mode = (await execFile('git',['--literal-pathspecs', 'ls-files', '--format=%(objectmode)', local_path], {
             cwd: path.dirname(local_path),
-        })).stdout.trim() || (await fs.stat(local_path)).mode.toString(8);
+        })).stdout.trim();
+        const mode = existing_mode || (await fs.stat(local_path)).mode.toString(8);
+        const add_flag = existing_mode ? [] : ['--add'];
         const relative_path = path.relative(await getGitRootForFile(local_path), local_path);
-        await execFile('git', ['update-index', '--cacheinfo', [mode, object_id, relative_path].join(',')], {
+        await execFile('git', ['update-index', ...add_flag, '--cacheinfo', [mode, object_id, relative_path].join(',')], {
             cwd: path.dirname(local_path),
         });
     }
