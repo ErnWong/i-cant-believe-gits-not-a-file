@@ -21,6 +21,7 @@ const execFileUnguarded = util.promisify(child_process.execFile);
 const execFile = wrap(execFileUnguarded) as unknown as typeof execFileUnguarded;
 
 const SCHEME = 'icantbelievegit';
+const PREFIX_DIR = 'staged';
 
 const TYPE_MAP = {
     'blob': vscode.FileType.File,
@@ -34,24 +35,25 @@ async function getGitRootForFile(filePath: string) {
 }
 
 function toLocalPath(uri: vscode.Uri): string {
-    console.assert(uri.scheme === SCHEME);
-    console.assert(uri.query === '');
-    console.assert(uri.fragment === '');
+    console.assert(uri.scheme === SCHEME, 'Unexpected scheme %s', uri.scheme);
+    console.assert(uri.query === '', 'Unexpected query %s', uri.query);
+    console.assert(uri.fragment === '', 'Unexpected fragment %s', uri.fragment);
+    console.assert(path.basename(path.dirname(uri.path)) === PREFIX_DIR, 'Missing prefix dir %s in path %s', PREFIX_DIR, uri.path);
     return vscode.Uri.from({
         scheme: 'file',
         authority: uri.authority,
-        path: uri.path,
+        path: path.join(path.dirname(path.dirname(uri.path)), path.basename(uri.path)),
     }).fsPath;
 };
 
 function fromLocalPath(uri: vscode.Uri): vscode.Uri {
-    console.assert(uri.scheme === 'file');
-    console.assert(uri.query === '');
-    console.assert(uri.fragment === '');
+    console.assert(uri.scheme === 'file', 'Unexpected scheme %s', uri.scheme);
+    console.assert(uri.query === '', 'Unexpected query %s', uri.query);
+    console.assert(uri.fragment === '', 'Unexpected fragment %s', uri.fragment);
     return vscode.Uri.from({
         scheme: SCHEME,
         authority: uri.authority,
-        path: uri.path,
+        path: path.join(path.dirname(uri.path), PREFIX_DIR, path.basename(uri.path)),
     });
 };
 
