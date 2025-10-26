@@ -15,8 +15,8 @@ Although, yes, `git add` already has a `--patch` flag for staging smaller blocks
 
 | <kbd>Ctrl+Shift+P</kbd> Command | Description |
 |----|----|
-| `Git: Diff Current File (Editable)` | Just like `Git: Open Changes` but the left-hand side is now editable. |
-| `Git: Open Staged Changes (Editable)` | Just like `Git: Open Staged Changes` but the right hand side is now editable. |
+| `Git: Diff Current File (Editable)` | Just like `Git: Open Changes` but the left-hand side is now editable. Opens a diff comparison where the right side is the current file in your working directory, while the left side is the staged version of the file that will be commited. |
+| `Git: Open Staged Changes (Editable)` | Just like `Git: Open Staged Changes` but the right hand side is now editable. It is similar to running `git diff --cached` and shows all the staged changes that will be commited if you ran `git commit`. The diff windows will have the staged versions of the files on the right, and the current HEAD versions of the files on the left. |
 | `Git: Open Staged File (Editable)` | Opens a dialog box for you to select a file to open the staged version for. |
 | `Git: Open Staged Version of Current File (Editable)` | Opens a new editor (without any diffing) that shows you and allows you to edit what git has staged for the current file. |
 
