@@ -20,7 +20,7 @@ const wrap = <T extends (...args: any[])=>Promise<any>>(f: T) => (...args: Param
 const execFileUnguarded = util.promisify(child_process.execFile);
 const execFile = wrap(execFileUnguarded) as unknown as typeof execFileUnguarded;
 
-const SCHEME = 'icantbeleivegit';
+const SCHEME = 'icantbelievegit';
 
 const TYPE_MAP = {
     'blob': vscode.FileType.File,
