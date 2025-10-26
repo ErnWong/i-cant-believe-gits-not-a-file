@@ -39,11 +39,6 @@
 				"category": "Git"
 			},
 			{
-				"command": "icantbelievegit.openUnstagedChanges",
-				"title": "Open Unstaged Changes (Editable)",
-				"category": "Git"
-			},
-			{
 				"command": "icantbelievegit.diffCurrentFile",
 				"title": "Diff Current File (Editable)",
 				"category": "Git"
@@ -59,9 +54,6 @@
 				},
 				{
 				    "command": "icantbelievegit.openStagedChanges"
-				},
-				{
-				    "command": "icantbelievegit.openUnstagedChanges"
 				},
 				{
 				    "command": "icantbelievegit.diffCurrentFile"

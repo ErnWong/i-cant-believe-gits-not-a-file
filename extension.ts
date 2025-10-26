@@ -396,32 +396,4 @@ export function activate(context: vscode.ExtensionContext) {
             ])
         );
     }));
-    context.subscriptions.push(vscode.commands.registerCommand('icantbelievegit.openUnstagedChanges', async _ => {
-        const current_path = vscode.window.activeTextEditor?.document.uri ?? vscode.workspace.workspaceFolders?.[0].uri;
-        if (!current_path) {
-            showError("Cannot open staged changes: There are no active document or workspace");
-            return;
-        }
-        if (current_path.scheme !== 'file') {
-            showError("Cannot open staged changes: Not a local directory");
-            return;
-        }
-        const git_root = await getGitRootForFile(current_path.fsPath);
-        const staged_change_paths = (await execFile('git', ['diff', '--name-only'], {
-            cwd: git_root,
-        })).stdout
-            .trim()
-            .split('\n')
-            .map(relative_path => vscode.Uri.file(path.join(git_root, relative_path)));
-        const x = await vscode.commands.executeCommand(
-            'vscode.changes',
-            `Git: Unstaged Changes (editable)`,
-            staged_change_paths.map(local_uri => [
-                local_uri,
-                fromLocalPath(local_uri),
-                local_uri,
-            ])
-        );
-        console.log(x);
-    }));
 }
