@@ -3,7 +3,6 @@ import * as path from 'node:path';
 import * as fs from 'node:fs/promises';
 import * as util from 'node:util';
 import * as vscode from 'vscode';
-import { abort } from 'node:process';
 
 const wrap = <T extends (...args: any[])=>Promise<any>>(f: T) => (...args: Parameters<T>):Promise<Awaited<ReturnType<T>>> => {
     console.log(...args);
