@@ -17,6 +17,9 @@
 	"activationEvents": [
 		"onFileSystem:icantbelievegit"
 	],
+	"extensionDependencies": [
+		"vscode.git"
+	],
 	"main": "./out/extension",
 	"contributes": {
 		"commands": [
