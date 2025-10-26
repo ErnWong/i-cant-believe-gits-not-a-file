@@ -134,13 +134,38 @@ class GitIndexFS implements vscode.FileSystemProvider {
 
     async stat(uri: vscode.Uri): Promise<vscode.FileStat> {
         const local_path = toLocalPath(uri);
-        const [object_type, object_id] = (await execFile(
+        const entries = (await execFile(
             'git',
             ['--literal-pathspecs', 'ls-files', '--cached', '--format=%(objecttype)%x00%(objectname)', local_path],
             {
                 cwd: path.dirname(local_path),
             }
-        )).stdout.trim().split('\x00');
+        )).stdout.trim().split('\n');
+        if (entries[0] === '') {
+            // Path may not be in the index yet. Load from working directory instead.
+            console.log('GitIndexFS cached file not found - stat local file from working directory instead');
+            try {
+                const stat = await fs.stat(local_path);
+                return {
+                    type: stat.isFile() ? vscode.FileType.File
+                        : stat.isDirectory() ? vscode.FileType.Directory
+                        : stat.isSymbolicLink() ? vscode.FileType.SymbolicLink
+                        : vscode.FileType.Unknown,
+                    ctime: stat.ctimeMs,
+                    mtime: stat.mtimeMs,
+                    size: stat.size,
+                };
+            } catch (err) {
+                if (err && (err as { code?: string }).code === 'ENOENT') {
+                    throw vscode.FileSystemError.FileNotFound(uri);
+                }
+                throw err;
+            }
+        }
+        if (entries.length > 1) {
+            console.warn(`Unsupported: Multiple objects for the same path ${local_path} - is a merge in progress?`);
+        }
+        const [object_type, object_id] = entries[0].split('\x00');
         const size = Number.parseInt((await execFile(
             'git',
             ['--literal-pathspecs', 'cat-file', '-s', object_id],
@@ -181,9 +206,26 @@ class GitIndexFS implements vscode.FileSystemProvider {
 
     async readFile(uri: vscode.Uri): Promise<Uint8Array> {
         const local_path = toLocalPath(uri);
-        const object_id = (await execFile('git', ['--literal-pathspecs', 'ls-files', '--cached', '--format=%(objectname)', local_path], {
+        const object_ids = (await execFile('git', ['--literal-pathspecs', 'ls-files', '--cached', '--format=%(objectname)', local_path], {
             cwd: path.dirname(local_path),
-        })).stdout.trim();
+        })).stdout.trim().split('\n');
+        if (object_ids[0] === '') {
+            try {
+                // File not added to index yet. Load working copy instead to simulate a potential git add.
+                console.log('GitIndexFS cached file not found - loading local file from working directory');
+                return await fs.readFile(local_path);
+            } catch (err) {
+                if (err && (err as { code?: string }).code === 'ENOENT') {
+                    // Or should we instead return empty so user can create the index file?
+                    throw vscode.FileSystemError.FileNotFound(uri);
+                }
+                throw err;
+            }
+        }
+        if (object_ids.length > 1) {
+            console.warn(`Unsupported: Multiple objects for the same path ${local_path} - is a merge in progress?`);
+        }
+        const object_id = object_ids[0];
         return (await execFile('git', ['cat-file', 'blob', object_id], {
             cwd: path.dirname(local_path),
             encoding: 'buffer',
