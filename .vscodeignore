@@ -1,0 +1,6 @@
+*
+*/
+.DS_Store
+!*.markdown
+!LICENSE
+!out/extension.js
