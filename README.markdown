@@ -51,3 +51,7 @@ Thank you to Tim Pope's legendary [fugitive](https://github.com/tpope/vim-fugiti
 Thank you to bers for asking this question on Stack Overflow: https://stackoverflow.com/questions/62810963/why-cant-i-directly-edit-staged-changes-in-the-git-index-with-vs-code which motivated me to go ahead and make this extension.
 
 Do you have a VS Code extension that does something similar? Or perhaps a different tool or a different plugin for a different editor? I'd love to know! Feel free to raise an issue or a PR and I'd be happy to include it here.
+
+<sub>
+<i>Icon: Uses duck image from https://pngimg.com/image/5019 (Attribution-NonCommercial 4.0 International (CC BY-NC 4.0))</i>
+</sub>
