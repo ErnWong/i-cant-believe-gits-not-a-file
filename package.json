@@ -2,8 +2,19 @@
     "name": "icantbelievegit",
     "displayName": "I Can't Believe (G)it's Not a File",
     "description": "Access and edit the git index as if it's a real filesystem",
+    "author": {
+        "name": "Ernest Wong"
+    },
+    "icon": "images/icon.png",
+    "galleryBanner": {
+        "color": "#FFFF00",
+        "theme": "light"
+    },
     "version": "0.0.1",
     "license": "MIT",
+    "bugs": {
+        "url": "https://github.com/ErnWong/i-cant-believe-gits-not-a-file/issues"
+    },
     "repository": {
         "type": "git",
         "url": "https://github.com/ErnWong/i-cant-believe-gits-not-a-file"
