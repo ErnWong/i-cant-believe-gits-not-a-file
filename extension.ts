@@ -100,6 +100,8 @@ class GitIndexFS implements vscode.FileSystemProvider {
     private _gitIndexWatchers = new Map<string, GitIndexWatcher>();
 
     watch(uri: vscode.Uri, options: { readonly recursive: boolean; readonly excludes: readonly string[]; }): vscode.Disposable {
+        console.log('GitIndexFS.watch', uri, options);
+
         const local_path = toLocalPath(uri);
 
         let listener: vscode.Disposable | null = null;
@@ -133,6 +135,8 @@ class GitIndexFS implements vscode.FileSystemProvider {
     }
 
     async stat(uri: vscode.Uri): Promise<vscode.FileStat> {
+        console.log('GitIndexFS.stat', uri);
+
         const local_path = toLocalPath(uri);
         const entries = (await execFile(
             'git',
@@ -184,6 +188,8 @@ class GitIndexFS implements vscode.FileSystemProvider {
     }
 
     async readDirectory(uri: vscode.Uri): Promise<[string, vscode.FileType][]> {
+        console.log('GitIndexFS.readDirectory', uri);
+
         const local_path = toLocalPath(uri);
         return (await execFile(
             'git',
@@ -201,10 +207,13 @@ class GitIndexFS implements vscode.FileSystemProvider {
     }
 
     createDirectory(uri: vscode.Uri): void | Thenable<void> {
+        console.log('GitIndexFS.createDirectory', uri);
         throw new Error('GitIndexFS createDirectory not implemented.');
     }
 
     async readFile(uri: vscode.Uri): Promise<Uint8Array> {
+        console.log('GitIndexFS.readFile', uri);
+
         const local_path = toLocalPath(uri);
         const object_ids = (await execFile('git', ['--literal-pathspecs', 'ls-files', '--cached', '--format=%(objectname)', local_path], {
             cwd: path.dirname(local_path),
@@ -233,6 +242,8 @@ class GitIndexFS implements vscode.FileSystemProvider {
     }
 
     async writeFile(uri: vscode.Uri, content: Uint8Array, options: { readonly create: boolean; readonly overwrite: boolean; }): Promise<void> {
+        console.log('GitIndexFS.writeFile', uri);
+
         const local_path = toLocalPath(uri);
         const proc = execFile('git', ['hash-object', '-w', '--stdin'], {
             cwd: path.dirname(local_path),
@@ -249,14 +260,17 @@ class GitIndexFS implements vscode.FileSystemProvider {
     }
 
     delete(uri: vscode.Uri, options: { readonly recursive: boolean; }): void | Thenable<void> {
+        console.log('GitIndexFS.delete', uri, options);
         throw new Error('GitIndexFS delete not implemented.');
     }
 
     rename(oldUri: vscode.Uri, newUri: vscode.Uri, options: { readonly overwrite: boolean; }): void | Thenable<void> {
+        console.log('GitIndexFS.rename', oldUri, newUri, options);
         throw new Error('GitIndexFS rename not implemented.');
     }
 
     copy(source: vscode.Uri, destination: vscode.Uri, options: { readonly overwrite: boolean; }): void | Thenable<void> {
+        console.log('GitIndexFS.copy', source, destination, options);
         throw new Error('GitIndexFS copy not implemented.');
     }
 }
