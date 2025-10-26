@@ -189,12 +189,19 @@ class GitIndexFS implements vscode.FileSystemProvider {
     }
 
     async writeFile(uri: vscode.Uri, content: Uint8Array, options: { readonly create: boolean; readonly overwrite: boolean; }): Promise<void> {
-        const proc = execFile('git', ['hash-object', '-w', '--stdin']);
-        proc.child.stdin?.end(content);
-        const object_id = (await proc).stdout.trim();
         const local_path = toLocalPath(uri);
-        const mode = (await execFile('git',['--literal-pathspecs', 'ls-file', '--format=$(objectmode)', local_path])).stdout.trim() ?? '100644';
-        await execFile('git', ['update-index', '--cacheinfo', [mode, object_id, local_path].join(',')]);
+        const proc = execFile('git', ['hash-object', '-w', '--stdin'], {
+            cwd: path.dirname(local_path),
+        });
+        proc.child.stdin!.end(content);
+        const object_id = (await proc).stdout.trim();
+        const mode = (await execFile('git',['--literal-pathspecs', 'ls-files', '--format=%(objectmode)', local_path], {
+            cwd: path.dirname(local_path),
+        })).stdout.trim() ?? '100644';
+        const relative_path = path.relative(await getGitRootForFile(local_path), local_path);
+        await execFile('git', ['update-index', '--cacheinfo', [mode, object_id, relative_path].join(',')], {
+            cwd: path.dirname(local_path),
+        });
     }
 
     delete(uri: vscode.Uri, options: { readonly recursive: boolean; }): void | Thenable<void> {
