@@ -29,6 +29,11 @@
 				"command": "icantbelievegit.openIndexForPath",
 				"title": "Open index for path",
 				"category": "icantbelievegit"
+			},
+			{
+				"command": "icantbelievegit.diffCurrentFile",
+				"title": "Diff current file",
+				"category": "icantbelievegit"
 			}
 		],
 		"menus": {
@@ -38,6 +43,9 @@
 				},
 				{
 				    "command": "icantbelievegit.openIndexForPath"
+				},
+				{
+				    "command": "icantbelievegit.diffCurrentFile"
 				}
 			]
 		}

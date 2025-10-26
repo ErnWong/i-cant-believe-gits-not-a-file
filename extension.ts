@@ -243,6 +243,19 @@ export function activate(context: vscode.ExtensionContext) {
         const doc = await vscode.workspace.openTextDocument(git_index_path);
         await vscode.window.showTextDocument(doc, vscode.ViewColumn.Beside);
     }));
+    context.subscriptions.push(vscode.commands.registerCommand('icantbelievegit.diffCurrentFile', async _ => {
+        const current_local_path = vscode.window.activeTextEditor?.document.uri;
+        if (!current_local_path) {
+            vscode.window.showErrorMessage("Cannot open index for current file: There isn't an active text editor available");
+            return;
+        }
+        if (current_local_path.scheme !== 'file') {
+            vscode.window.showErrorMessage("Cannot open index for current file: Current file isn't a local file");
+            return;
+        }
+        const git_index_path = fromLocalPath(current_local_path);
+        await vscode.commands.executeCommand('vscode.diff', git_index_path, current_local_path, 'Git diff of ' + path.basename(current_local_path.fsPath));
+    }));
     context.subscriptions.push(vscode.commands.registerCommand('icantbelievegit.openIndexForPath', async _ => {
         const paths = await vscode.window.showOpenDialog({
             canSelectFiles: true,
