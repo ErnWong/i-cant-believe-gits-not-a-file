@@ -199,7 +199,7 @@ class GitIndexFS implements vscode.FileSystemProvider {
         const [object_type, object_id] = entries[0].split('\x00');
         const size = Number.parseInt((await execFile(
             'git',
-            ['--literal-pathspecs', 'cat-file', '-s', object_id],
+            ['cat-file', '-s', object_id],
             {
                 cwd: path.dirname(local_path),
             }
