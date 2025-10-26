@@ -21,6 +21,7 @@ const execFileUnguarded = util.promisify(child_process.execFile);
 const execFile = wrap(execFileUnguarded) as unknown as typeof execFileUnguarded;
 
 const SCHEME = 'icantbeleivegit';
+
 const TYPE_MAP = {
     'blob': vscode.FileType.File,
     'tree': vscode.FileType.Directory,
