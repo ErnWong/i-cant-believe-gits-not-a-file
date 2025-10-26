@@ -317,14 +317,14 @@ export function activate(context: vscode.ExtensionContext) {
             }
         )
     );
-    context.subscriptions.push(vscode.commands.registerCommand('icantbelievegit.openIndexForCurrentFile', async _ => {
+    context.subscriptions.push(vscode.commands.registerCommand('icantbelievegit.openStagedForCurrentFile', async _ => {
         const current_local_path = vscode.window.activeTextEditor?.document.uri;
         if (!current_local_path) {
-            vscode.window.showErrorMessage("Cannot open index for current file: There isn't an active text editor available");
+            vscode.window.showErrorMessage("Cannot open staged version of the current file: There isn't an active text editor available");
             return;
         }
         if (current_local_path.scheme !== 'file') {
-            vscode.window.showErrorMessage("Cannot open index for current file: Current file isn't a local file");
+            vscode.window.showErrorMessage("Cannot open staged version of the current file: Current file isn't a local file");
             return;
         }
         const git_index_path = fromLocalPath(current_local_path);
@@ -334,29 +334,29 @@ export function activate(context: vscode.ExtensionContext) {
     context.subscriptions.push(vscode.commands.registerCommand('icantbelievegit.diffCurrentFile', async _ => {
         const current_local_path = vscode.window.activeTextEditor?.document.uri;
         if (!current_local_path) {
-            showError("Cannot open index for current file: There isn't an active text editor available");
+            showError("Cannot open staged version of the current file: There isn't an active text editor available");
             return;
         }
         if (current_local_path.scheme !== 'file') {
-            showError("Cannot open index for current file: Current file isn't a local file");
+            showError("Cannot open staged version of the current file: Current file isn't a local file");
             return;
         }
         const git_index_path = fromLocalPath(current_local_path);
         await vscode.commands.executeCommand('vscode.diff', git_index_path, current_local_path, 'Git diff of ' + path.basename(current_local_path.fsPath));
     }));
-    context.subscriptions.push(vscode.commands.registerCommand('icantbelievegit.openIndexForPath', async _ => {
+    context.subscriptions.push(vscode.commands.registerCommand('icantbelievegit.openStagedForPath', async _ => {
         const paths = await vscode.window.showOpenDialog({
             canSelectFiles: true,
             canSelectFolders: false,
             canSelectMany: false,
             openLabel: "Select file",
-            title: "Open an indexed version of a file",
+            title: "Open an staged version of a file",
         });
         if (!paths) {
             return;
         }
         if (paths[0].scheme !== 'file') {
-            showError("Cannot open index: Chosen path isn't a local file");
+            showError("Cannot open staged file: Chosen path isn't a local file");
             return;
         }
         const git_index_path = fromLocalPath(paths[0]);

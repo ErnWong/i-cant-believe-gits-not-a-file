@@ -21,28 +21,28 @@
 	"contributes": {
 		"commands": [
 			{
-				"command": "icantbelievegit.openIndexForCurrentFile",
-				"title": "Open index for current file",
-				"category": "icantbelievegit"
+				"command": "icantbelievegit.openStagedForCurrentFile",
+				"title": "Open Staged Version of Current File (Editable)",
+				"category": "Git"
 			},
 			{
-				"command": "icantbelievegit.openIndexForPath",
-				"title": "Open index for path",
-				"category": "icantbelievegit"
+				"command": "icantbelievegit.openStagedForPath",
+				"title": "Open Staged File (Editable)",
+				"category": "Git"
 			},
 			{
 				"command": "icantbelievegit.diffCurrentFile",
-				"title": "Diff current file",
-				"category": "icantbelievegit"
+				"title": "Diff Current File (Editable)",
+				"category": "Git"
 			}
 		],
 		"menus": {
 			"commandPalette": [
 				{
-				    "command": "icantbelievegit.openIndexForCurrentFile"
+				    "command": "icantbelievegit.openStagedForCurrentFile"
 				},
 				{
-				    "command": "icantbelievegit.openIndexForPath"
+				    "command": "icantbelievegit.openStagedForPath"
 				},
 				{
 				    "command": "icantbelievegit.diffCurrentFile"
