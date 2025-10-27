@@ -4,11 +4,10 @@
   <p>
     <a href="https://github.com/ErnWong/i-cant-believe-gits-not-a-file/actions/workflows/build.yml"><img alt="Build" src="https://github.com/ErnWong/i-cant-believe-gits-not-a-file/actions/workflows/build.yml/badge.svg"></a>
   </p>
+  <img alt="Screencast demoing the extension" src="https://github.com/ErnWong/i-cant-believe-gits-not-a-file/blob/223a5768f894f346dd4a83aec694b612d4ae414f/screencast.gif?raw=true">
 </div>
 
 Have you ever opened up a git diff of a file and wished "It would be really nice if I [could](https://github.com/microsoft/vscode/issues/91065) directly [edit](https://github.com/microsoft/vscode/issues/91274) the [left](https://github.com/microsoft/vscode/issues/15785) side [of](https://github.com/microsoft/vscode/issues/33681) the diff"?
-
-![Screencast](./screencast.gif)
 
 Perhaps, were you a Vim user and you miss this functionality that the [vim-fugitive](https://dzx.fr/blog/introduction-to-vim-fugitive/#:~:text=Fortunately%2C%20one%20of%20Fugitive%27s%20killer%20features%20is%20being%20able%20to%20edit%20the%20content%20of%20the%20index%20directly.%20When%20dealing%20with%20lines%20where%20an%20inline%20diff%20isn%27t%20enough%2C%20you%20can%20open%20a%20full%20vertical%20diff%20between%20the%20worktree%20and%20the%20index%20by%20pressing%20dv%20over%20a%20file%20under%20the%20%22Unstaged%22%20section%3A) plugin supports?
 
