@@ -37,7 +37,6 @@ jobs:
         with:
           name: Latest Release
           tag: latest
-          commit: master
-          body: ${{ github.event.head_commit.message }}
+          commit: ${{github.sha}}
           artifacts: "*.vsix"
           prerelease: true
