@@ -15,8 +15,8 @@ Although, yes, `git add` already has a `--patch` flag for staging smaller blocks
 
 ## Install
 
-- TODO Visual Studio Marketplace
-- TODO Open VSX Registry
+- via Visual Studio Marketplace: https://marketplace.visualstudio.com/items?itemName=ErnWong.icantbelievegit
+- via Open VSX Registry: https://open-vsx.org/extension/ErnWong/icantbelievegit
 - Download the [latest .vsix file](https://github.com/ErnWong/i-cant-believe-gits-not-a-file/releases/tag/latest) and install it manually (Extensions -> Views and More Actions... -> Install from VSIX...) or via command line:
   ```bash
   code --install-extension icantbelievegit-0.0.1.vsix
