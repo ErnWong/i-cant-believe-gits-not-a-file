@@ -9,8 +9,8 @@
       let
         pkgs = (import (inputs.nixpkgs) { inherit system; });
         vsix = pkgs.stdenvNoCC.mkDerivation (finalAttrs: {
-          name = "vscode-icantbelievegit-${finalAttrs.version}.vsix";
-          pname = "vscode-icantbelievegit-vsix";
+          name = "icantbelievegit-${finalAttrs.version}.vsix";
+          pname = "icantbelievegit-vsix";
           version = "0.0.1";
           src = ./.;
           npmDeps = pkgs.fetchNpmDeps {

@@ -12,11 +12,11 @@ jobs:
           github_access_token: ${{ secrets.GITHUB_TOKEN }}
       - run: nix build .#
       - run: nix build .#vsix
-      - run: cp -a result vscode-icantbelievegit.vsix
+      - run: cp -a result icantbelievegit-latest-$(date +'%Y-%m-%dT%H:%M:%S').vsix
       - uses: actions/upload-artifact@v4
         with:
           name: vsix
-          path: vscode-icantbelievegit.vsix
+          path: *.vsix
   upload:
     runs-on: ubuntu-latest
     needs: build-vsix
@@ -36,5 +36,5 @@ jobs:
           tag: latest
           commit: master
           body: ${{ github.event.head_commit.message }}
-          artifacts: "vscode-icantbelievegit.vsix"
+          artifacts: "*.vsix"
           prerelease: true

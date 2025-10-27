@@ -17,7 +17,7 @@ Although, yes, `git add` already has a `--patch` flag for staging smaller blocks
 - TODO Open VSX Registry
 - Download the latest .vsix file from TODO and install it manually (Extensions -> Views and More Actions... -> Install from VSIX...) or via command line:
   ```bash
-  code --install-extension vscode-icantbelievegit-0.0.1.vsix
+  code --install-extension icantbelievegit-0.0.1.vsix
   ```
 - [Nix](https://nixos.org/) flakes via [Home Manager](https://github.com/nix-community/home-manager)
   ```nix
