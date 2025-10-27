@@ -8,10 +8,11 @@
     inputs.flake-utils.lib.eachDefaultSystem (system:
       let
         pkgs = (import (inputs.nixpkgs) { inherit system; });
+        pkgJson = builtins.fromJSON (builtins.readFile ./package.json);
         vsix = pkgs.stdenvNoCC.mkDerivation (finalAttrs: {
           name = "icantbelievegit-${finalAttrs.version}.vsix";
           pname = "icantbelievegit-vsix";
-          version = "0.0.1";
+          version = pkgJson.version;
           src = ./.;
           npmDeps = pkgs.fetchNpmDeps {
             name = "${finalAttrs.pname}-npm-deps";
