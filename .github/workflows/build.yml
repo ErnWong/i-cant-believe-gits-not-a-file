@@ -23,7 +23,7 @@ jobs:
     if: github.ref == 'refs/heads/master'
     steps:
       - name: Delete latest release
-        run: gh release delete latest --cleanup-tag
+        run: gh release delete latest --cleanup-tag || echo No latest release to delete
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       - uses: actions/download-artifact@v4
