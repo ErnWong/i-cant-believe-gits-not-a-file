@@ -11,6 +11,27 @@ Perhaps, were you a Vim user and you miss this functionality that the [vim-fugit
 
 Although, yes, `git add` already has a `--patch` flag for staging smaller blocks of the file and edit the patches, and yes, you can do stage individual blocks in VSCode as well. However, none of these are as powerful and as elegant as treating the staged version of the file as an editable file, where you can see the full file context and benefit from most of the existing features of your editor.
 
+## Install
+
+- TODO Visual Studio Marketplace
+- TODO Open VSX Registry
+- [Nix](https://nixos.org/) flakes via [Home Manager](https://github.com/nix-community/home-manager)
+  ```nix
+  # In your flake.nix file
+  inputs.icantbelievegit = {
+    url = "github:ErnWong/i-cant-believe-gits-not-a-file";
+    inputs.nixpkgs.follows = "nixpkgs";
+  };
+
+  # ... later in your home manager config:
+  programs.vscode = {
+    enable = true;
+    profiles.default.extensions = [
+      icantbelievegit.packages.default
+    ];
+  };
+  ```
+
 ## Usage
 
 | <kbd>Ctrl+Shift+P</kbd> Command | Description |
