@@ -1,6 +1,9 @@
 <div align="center">
   <h1>I can’t believe (g)it’s not a file!</h1>
   <p><i>a Visual Studio Code extension to directly edit what’s staged in git</i></p>
+  <p>
+    <a href="https://github.com/ErnWong/i-cant-believe-gits-not-a-file/actions/workflows/build.yml"><img alt="Build" src="https://github.com/ErnWong/i-cant-believe-gits-not-a-file/actions/workflows/build.yml/badge.svg"></a>
+  </p>
 </div>
 
 Have you ever opened up a git diff of a file and wished "It would be really nice if I [could](https://github.com/microsoft/vscode/issues/91065) directly [edit](https://github.com/microsoft/vscode/issues/91274) the [left](https://github.com/microsoft/vscode/issues/15785) side [of](https://github.com/microsoft/vscode/issues/33681) the diff"?
@@ -15,7 +18,7 @@ Although, yes, `git add` already has a `--patch` flag for staging smaller blocks
 
 - TODO Visual Studio Marketplace
 - TODO Open VSX Registry
-- Download the latest .vsix file from TODO and install it manually (Extensions -> Views and More Actions... -> Install from VSIX...) or via command line:
+- Download the [latest .vsix file](https://github.com/ErnWong/i-cant-believe-gits-not-a-file/releases/tag/latest) and install it manually (Extensions -> Views and More Actions... -> Install from VSIX...) or via command line:
   ```bash
   code --install-extension icantbelievegit-0.0.1.vsix
   ```
