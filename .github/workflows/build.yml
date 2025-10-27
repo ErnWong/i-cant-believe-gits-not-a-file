@@ -22,7 +22,6 @@ jobs:
     needs: build-vsix
     if: github.ref == 'refs/heads/master'
     steps:
-      - uses: actions/checkout@v4
       - name: Delete latest release
         run: gh release delete latest --cleanup-tag
         env:
