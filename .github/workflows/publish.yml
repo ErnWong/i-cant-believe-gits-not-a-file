@@ -22,7 +22,6 @@ jobs:
       - uses: actions/download-artifact@v4
         with:
           name: vsix
-      - run: mv *.vsix icantbelievegit.vsix
       - name: Publish to Open VSX Registry
         uses: HaaLeo/publish-vscode-extension@v2
         id: publishToOpenVSX
