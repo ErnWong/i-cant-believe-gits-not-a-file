@@ -1,7 +1,7 @@
 *
 */
 .DS_Store
-!*.markdown
+!README.md
 !LICENSE
 !out/extension.js
 !images/icon.png
