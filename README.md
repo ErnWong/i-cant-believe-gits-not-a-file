@@ -15,12 +15,17 @@ Although, yes, `git add` already has a `--patch` flag for staging smaller blocks
 
 ## Install
 
-- via Visual Studio Marketplace: https://marketplace.visualstudio.com/items?itemName=ErnWong.icantbelievegit
-- via Open VSX Registry: https://open-vsx.org/extension/ErnWong/icantbelievegit
-- Download the [latest .vsix file](https://github.com/ErnWong/i-cant-believe-gits-not-a-file/releases/tag/latest) and install it manually (Extensions -> Views and More Actions... -> Install from VSIX...) or via command line:
+You can find this extension in the following places:
+
+- Visual Studio Marketplace: https://marketplace.visualstudio.com/items?itemName=ErnWong.icantbelievegit
+
+- Open VSX Registry: https://open-vsx.org/extension/ErnWong/icantbelievegit
+
+- You can also download the [latest .vsix file](https://github.com/ErnWong/i-cant-believe-gits-not-a-file/releases/tag/latest) and install it manually (Extensions -> Views and More Actions... -> Install from VSIX...) or via command line:
   ```bash
   code --install-extension icantbelievegit-0.0.1.vsix
   ```
+
 - [Nix](https://nixos.org/) flakes via [Home Manager](https://github.com/nix-community/home-manager)
   ```nix
   # In your flake.nix file
@@ -33,7 +38,7 @@ Although, yes, `git add` already has a `--patch` flag for staging smaller blocks
   programs.vscode = {
     enable = true;
     profiles.default.extensions = [
-      icantbelievegit.packages.default
+      icantbelievegit.packages.${system}.default
     ];
   };
   ```
