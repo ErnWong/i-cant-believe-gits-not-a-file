@@ -1,0 +1,24 @@
+name: Publish
+jobs:
+  build-vsix:
+    uses: ./.github/workflows/build.yml
+  publish:
+    runs-on: ubuntu-latest
+    needs: build-vsix
+    steps:
+      - uses: actions/download-artifact@v4
+        with:
+          name: vsix
+      - run: mv *.vsix icantbelievegit.vsix
+      - name: Publish to Open VSX Registry
+        uses: HaaLeo/publish-vscode-extension@v2
+        id: publishToOpenVSX
+        with:
+          pat: ${{ secrets.OPEN_VSX_TOKEN }}
+          extensionFile: ./icantbelievegit.vsix
+      - name: Publish to Visual Studio Marketplace
+        uses: HaaLeo/publish-vscode-extension@v2
+        with:
+          pat: ${{ secrets.VS_MARKETPLACE_TOKEN }}
+          registryUrl: https://marketplace.visualstudio.com
+          extensionFile: ./icantbelievegit.vsix

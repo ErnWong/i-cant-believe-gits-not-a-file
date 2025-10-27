@@ -2,6 +2,7 @@ name: Build
 on:
   pull_request:
   push:
+  workflow_call:
 jobs:
   build-vsix:
     runs-on: ubuntu-latest
