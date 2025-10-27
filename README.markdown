@@ -70,7 +70,11 @@ The following areas haven't been looked at nor tested:
 
 ## How it works
 
-Using [Git Plumbing](https://git-scm.com/book/en/v2/Git-Internals-Plumbing-and-Porcelain) commands like `git hash-object`, `git ls-files`, `git cat-file` and `git update-index`, we have all the tools needed to (1) Read the objects pointed to by the index so we can present it to the user as a virtual file, (2) Generate our own objects when the user saves our virtual file, (3) Update the index with our new object.
+Using [Git Plumbing](https://git-scm.com/book/en/v2/Git-Internals-Plumbing-and-Porcelain) commands, we have all the tools needed to:
+
+1. Read the objects (`git cat-file`) pointed to by the index (`git ls-files --cached`) so we can present it to the user as a virtual file.
+2. Generate our own objects (`git hash-object -w`) when the user saves our virtual file.
+3. Update the index with our new object (`git update-index`).
 
 ## Inspiration Credits
 
