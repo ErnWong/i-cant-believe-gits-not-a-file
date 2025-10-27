@@ -1,4 +1,6 @@
 name: Publish
+on:
+  workflow_dispatch:
 jobs:
   build-vsix:
     uses: ./.github/workflows/build.yml
