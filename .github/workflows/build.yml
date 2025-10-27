@@ -25,6 +25,7 @@ jobs:
     permissions:
       contents: write
     steps:
+      - uses: actions/checkout@v4
       - name: Delete latest release
         run: gh release delete latest --cleanup-tag || echo No latest release to delete
         env:
