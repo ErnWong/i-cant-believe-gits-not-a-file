@@ -25,8 +25,8 @@ jobs:
       contents: write
     steps:
       - uses: actions/checkout@v4
-      - name: Delete latest release
-        run: gh release delete latest --cleanup-tag || echo No latest release to delete
+      - name: Delete latest pre-release
+        run: gh release delete latest-pre-release --cleanup-tag || echo No latest-pre-release to delete
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       - uses: actions/download-artifact@v4
@@ -34,8 +34,8 @@ jobs:
           name: vsix
       - uses: ncipollo/release-action@v1
         with:
-          name: Latest Release
-          tag: latest
+          name: Latest Pre-release
+          tag: latest-pre-release
           commit: ${{github.sha}}
           artifacts: "*.vsix"
           prerelease: true
