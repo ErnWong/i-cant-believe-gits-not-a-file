@@ -66,11 +66,11 @@ function toLocalPath(uri: vscode.Uri): string {
     assert(uri.scheme === SCHEME, `Unexpected scheme ${uri.scheme}`);
     assert(uri.query === '', `Unexpected query ${uri.query}`);
     assert(uri.fragment === '', `Unexpected fragment ${uri.fragment}`);
-    assert(path.basename(path.dirname(uri.path)) === PREFIX_DIR, `Missing prefix dir ${PREFIX_DIR} in path ${uri.path}`);
+    assert(path.posix.basename(path.posix.dirname(uri.path)) === PREFIX_DIR, `Missing prefix dir ${PREFIX_DIR} in path ${uri.path}`);
     return vscode.Uri.from({
         scheme: 'file',
         authority: uri.authority,
-        path: path.join(path.dirname(path.dirname(uri.path)), path.basename(uri.path)),
+        path: path.posix.join(path.posix.dirname(path.posix.dirname(uri.path)), path.posix.basename(uri.path)),
     }).fsPath;
 };
 
@@ -81,7 +81,7 @@ function fromLocalPath(uri: vscode.Uri): vscode.Uri {
     return vscode.Uri.from({
         scheme: SCHEME,
         authority: uri.authority,
-        path: path.join(path.dirname(uri.path), PREFIX_DIR, path.basename(uri.path)),
+        path: path.posix.join(path.posix.dirname(uri.path), PREFIX_DIR, path.posix.basename(uri.path)),
     });
 };
 
