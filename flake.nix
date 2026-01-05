@@ -42,11 +42,6 @@
           vscodeExtName = "icantbelievegit";
           vscodeExtUniqueId = "${finalAttrs.vscodeExtPublisher}.${finalAttrs.vscodeExtName}";
           src = vsix;
-          unpackPhase = ''
-            runHook preUnpack
-            unzip $src
-            runHook postUnpack
-          '';
         });
       in {
         devShell = pkgs.mkShell {
